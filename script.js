@@ -1,11 +1,12 @@
 async function fetchData(number) {
-    const url = `https://18comic.vip/album/${number}`;
+    const proxyUrl = 'https://api.allorigins.win/get?url=';
+    const url = proxyUrl + encodeURIComponent(`https://18comic.vip/album/${number}`);
     try {
         const response = await fetch(url);
         if (response.ok) {
-            const text = await response.text();
+            const { contents } = await response.json();
             const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
+            const doc = parser.parseFromString(contents, 'text/html');
             const data = extractData(doc);
             displayData(data, number);
         } else {
