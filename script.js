@@ -1,7 +1,6 @@
 async function fetchData(number) {
     const proxyUrl = 'https://agent.xz39.xyz/';
     const targetUrl = `https://18comic.vip/album/${number}`;
-    const url = proxyUrl + targetUrl;
 
     // 自定义请求头
     const headers = {
@@ -23,9 +22,16 @@ async function fetchData(number) {
     };
 
     try {
-        const response = await fetch(url, {
-            method: 'GET', // 请求方法
-            headers: headers // 添加自定义请求头
+        const response = await fetch(proxyUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url: targetUrl,
+                method: 'GET',
+                headers: headers
+            })
         });
 
         if (response.ok) {

@@ -16,6 +16,9 @@ const specialCases = {
 // 修正：处理请求头
 function handleSpecialCases(request) {
   const url = new URL(request.url);
+  const actualUrlStr = url.pathname.replace("/", "") + url.search + url.hash;
+  const actualUrl = new URL(actualUrlStr);
+
   const rules = specialCases[url.hostname] || specialCases["*"];
   const headers = new Headers(request.headers); // 复制原始请求头
   for (const [key, value] of Object.entries(rules)) {
@@ -30,12 +33,46 @@ function handleSpecialCases(request) {
         break;
     }
   }
+
   // 返回一个新的 Request 对象
-  return new Request(request.url, {
+  return new Request(actualUrl, {
     headers: headers,
     method: request.method,
     body: request.body
   });
+}
+
+async function handlePostRequest(request) {
+  try {
+    const { url, method, headers: customHeaders, body } = await request.json();
+    const headers = new Headers(customHeaders);
+    const modifiedRequest = new Request(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : null
+    });
+
+    const response = await fetch(modifiedRequest);
+
+    const responseHeaders = new Headers(response.headers);
+    responseHeaders.set('Access-Control-Allow-Origin', '*');
+    responseHeaders.set('X-Proxy-Success', 'true');
+
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: responseHeaders
+    });
+  } catch (error) {
+    const headers = new Headers();
+    headers.set('Access-Control-Allow-Origin', '*');
+    headers.set('X-Proxy-Success', 'false');
+    return new Response('请求转发失败', {
+      status: 500,
+      statusText: 'Internal Server Error',
+      headers: headers
+    });
+  }
 }
 
 async function handleRequest(request) {
@@ -47,6 +84,16 @@ async function handleRequest(request) {
     headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, User-Agent, Accept, Accept-Encoding, Accept-Language, Cache-Control, Cookie, Referer, Sec-CH-UA, Sec-CH-UA-Mobile, Sec-CH-UA-Platform, Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User, Upgrade-Insecure-Requests');
     return new Response(null, { headers });
   }
+
+  const url = new URL(request.url);
+  if (url.pathname === "/") {
+    if (request.method === 'POST') {
+      return handlePostRequest(request);
+    } else {
+      return new Response("Please enter the link after the /")
+    }
+  }
+
 
   try {
     // 处理特殊请求头
