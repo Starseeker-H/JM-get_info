@@ -41,6 +41,23 @@ async function fetchData(number) {
     }
 }
 
+async function copyText(element) {
+    try {
+        await navigator.clipboard.writeText(element.innerText);
+        document.getElementById('copy-message').innerText = '内容已复制到剪贴板';
+    } catch (err) {
+        document.getElementById('copy-message').innerText = '复制失败';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const number = event.target.number.value;
+        fetchData(number);
+    });
+});
+
 function extractData(doc) {
     const data = {};
     data.name = doc.querySelector("#wrapper > div.container > div:nth-child(4) > div > div.panel.panel-default.visible-lg.hidden-xs > div.panel-heading > div.pull-left > h1")?.innerText.trim() || '';
