@@ -1,6 +1,6 @@
 async function fetchData(number) {
     const proxyUrl = 'https://agent.s552356310.workers.dev/';
-    const targetUrl = 'https://18comic.vip/album/${number}';
+    const targetUrl = `https://18comic.vip/album/${number}`;
     const url = proxyUrl + targetUrl;
 
     // 自定义请求头
