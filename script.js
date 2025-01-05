@@ -1,10 +1,18 @@
 async function fetchData(number) {
-    const proxyUrl = 'https://api.allorigins.win/get?url=';
-    const url = proxyUrl + encodeURIComponent(`https://18comic.vip/album/${number}`);
+    const proxyUrl = 'https://agent.s552356310.workers.dev/';
+    const targetUrl = `https://18comic.vip/album/${number}`;
+    const url = proxyUrl + encodeURIComponent(targetUrl);
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Referer': 'https://18comic.vip/',
+                // 'Cookie': 'your_cookie_here' // 如果有合法的 Cookie，可以在这里添加
+            }
+        });
         if (response.ok) {
-            const { contents } = await response.json();
+            const contents = await response.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(contents, 'text/html');
             const data = extractData(doc);
