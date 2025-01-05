@@ -1,5 +1,5 @@
 async function fetchData(number) {
-    const proxyUrl = 'https://api.allorigins.win/get?url=';
+    const proxyUrl = 'https://agent.s552356310.workers.dev/';
     const targetUrl = 'https://18comic.vip/album/${number}';
     const url = proxyUrl + targetUrl;
 
