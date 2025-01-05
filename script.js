@@ -24,9 +24,7 @@ async function fetchData(number) {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify({ headers })
         });
         if (response.ok) {
