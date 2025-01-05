@@ -1,0 +1,66 @@
+/* styles.css */
+body {
+    font-size: 1rem; /* 默认字体大小 */
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8; /* 淡米黄色背景 */
+}
+
+#main-container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #fff; /* 主体部分背景 */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    font-size: 1rem; /* 输入框字体大小 */
+}
+
+input[type="submit"] {
+    font-size: 1rem; /* 提交按钮字体大小 */
+}
+
+#json_data {
+    font-size: 1rem; /* JSON 数据字体大小 */
+}
+
+#data-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: #f0f0f0; /* 矩形淡灰色背景 */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#data-display {
+    flex: 1;
+    line-height: 2;
+}
+
+#cover-display {
+    flex: 0 0 400px;
+    max-width: 100%; /* 确保封面图片在手机上不超出容器宽度 */
+}
+
+#cover-display img {
+    max-width: 100%; /* 确保封面图片在手机上不超出容器宽度 */
+    height: auto;
+}
+
+#copy-message {
+    color: green;
+    margin-top: 10px;
+}
+
+.copyable {
+    cursor: pointer;
+    color: blue;
+    background-color: #e0e0e0; /* 圆角矩形背景块 */
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
